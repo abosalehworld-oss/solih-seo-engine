@@ -1,0 +1,726 @@
+/**
+ * Solih SEO Engine v4.0 — Premium UI (Security Audit Edition)
+ * =====================================================
+ * Supports: Gutenberg + Classic Editor + Settings Page
+ * Supports: RTL (Arabic) + LTR (English, French)
+ * Supports: Brand Color via --solih-brand CSS variable
+ * Namespace: all classes start with "solih-seo-"
+ */
+
+/* ============================================================
+   Design Tokens
+   ============================================================ */
+:root {
+    --solih-primary: #4F46E5;
+    --solih-primary-hover: #4338CA;
+    --solih-brand: var(--solih-primary);
+    --solih-secondary: #0ea5e9;
+    --solih-success: #10B981;
+    --solih-danger: #EF4444;
+    --solih-bg: #F8FAFC;
+    --solih-surface: #FFFFFF;
+    --solih-text-dark: #0F172A;
+    --solih-text-muted: #64748B;
+    --solih-border: #E2E8F0;
+    --solih-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --solih-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --solih-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --solih-radius: 12px;
+}
+
+/* ============================================================
+   Main Wrapper
+   ============================================================ */
+.solih-seo-sidebar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: 4px;
+}
+
+/* ============================================================
+   Tab Filtering
+   ============================================================ */
+.solih-seo-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--solih-border);
+    margin-bottom: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.solih-seo-tab {
+    flex: 1;
+    padding: 10px 6px;
+    border: none;
+    background: none;
+    border-bottom: 3px solid transparent;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--solih-text-muted);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    position: relative;
+    top: 2px;
+}
+
+.solih-seo-tab:hover {
+    color: var(--solih-text-dark);
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.solih-seo-tab.active {
+    color: var(--solih-brand, var(--solih-primary));
+    border-bottom-color: var(--solih-brand, var(--solih-primary));
+}
+
+/* ============================================================
+   Language Switcher Bar (Classic Editor)
+   ============================================================ */
+.solih-seo-lang-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    border: 1px solid var(--solih-border);
+    border-radius: var(--solih-radius);
+    margin-bottom: 4px;
+}
+
+.solih-seo-lang-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--solih-text-dark);
+    white-space: nowrap;
+}
+
+.solih-seo-lang-select {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid var(--solih-border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    background: white;
+    color: var(--solih-text-dark);
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+    outline: none;
+}
+
+.solih-seo-lang-select:focus {
+    border-color: var(--solih-brand, var(--solih-primary));
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+}
+
+/* ============================================================
+   Language Panel (Gutenberg)
+   ============================================================ */
+.solih-seo-lang-panel {
+    border: none !important;
+}
+
+.solih-seo-lang-panel .components-panel__body-title {
+    font-size: 13px !important;
+}
+
+/* ============================================================
+   Loading State
+   ============================================================ */
+.solih-seo-loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
+    border-radius: var(--solih-radius);
+    border: 1px dashed rgba(79, 70, 229, 0.3);
+    text-align: center;
+    color: var(--solih-brand, var(--solih-primary));
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.solih-seo-loading-container p {
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    animation: solihPulseText 1.5s infinite;
+}
+
+@keyframes solihPulseText {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* ============================================================
+   Error State
+   ============================================================ */
+.solih-seo-error-state {
+    padding: 24px 20px;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-left: 4px solid var(--solih-danger);
+    border-radius: var(--solih-radius);
+    color: #991b1b;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    box-shadow: var(--solih-shadow-sm);
+}
+
+/* ============================================================
+   Empty State
+   ============================================================ */
+.solih-seo-empty-state {
+    padding: 24px 20px;
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border-left: 4px solid #f59e0b;
+    border-radius: var(--solih-radius);
+    color: #b45309;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    box-shadow: var(--solih-shadow-sm);
+}
+
+/* ============================================================
+   Cards List
+   ============================================================ */
+.solih-seo-suggestions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ============================================================
+   Suggestion Card
+   ============================================================ */
+.solih-seo-suggestion-card {
+    background: var(--solih-surface);
+    border: 1px solid var(--solih-border);
+    border-radius: var(--solih-radius);
+    padding: 16px;
+    box-shadow: var(--solih-shadow-sm);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.solih-seo-suggestion-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--solih-brand, var(--solih-primary)), var(--solih-secondary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.solih-seo-suggestion-card:hover {
+    border-color: rgba(79, 70, 229, 0.3);
+    box-shadow: var(--solih-shadow-lg);
+    transform: translateY(-2px);
+}
+
+.solih-seo-suggestion-card:hover::before {
+    opacity: 1;
+}
+
+/* ============================================================
+   Score Bar
+   ============================================================ */
+.solih-seo-score-bar {
+    position: relative;
+    height: 22px;
+    background: #f1f5f9;
+    border-radius: 11px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    border: 1px solid var(--solih-border);
+}
+
+.solih-seo-score-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 11px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 12px;
+}
+
+.solih-seo-score-text {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--solih-text-dark);
+    letter-spacing: 0.3px;
+    z-index: 1;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================================
+   Card Header & Title
+   ============================================================ */
+.solih-seo-card-header {
+    margin-bottom: 14px;
+}
+
+.solih-seo-title {
+    margin: 0 0 8px 0;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--solih-text-dark);
+}
+
+/* ============================================================
+   Badges
+   ============================================================ */
+.solih-seo-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.solih-seo-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: #eef2ff;
+    color: var(--solih-brand, var(--solih-primary));
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    border: 1px solid #c7d2fe;
+}
+
+.solih-seo-badge-type {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    color: #065f46;
+    border-color: #6ee7b7;
+}
+
+/* ============================================================
+   Card Actions
+   ============================================================ */
+.solih-seo-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* ============================================================
+   Copy Button
+   ============================================================ */
+.solih-seo-btn {
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    padding: 4px 14px !important;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border: 1px solid var(--solih-border) !important;
+    background: var(--solih-bg) !important;
+    color: var(--solih-text-dark) !important;
+    cursor: pointer;
+}
+
+.solih-seo-btn:hover {
+    background: white !important;
+    border-color: var(--solih-text-muted) !important;
+    transform: scale(1.02);
+}
+
+.solih-seo-btn.is-copied {
+    background: linear-gradient(135deg, var(--solih-success), #059669) !important;
+    border-color: transparent !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2) !important;
+    transform: scale(1.05);
+}
+
+/* ============================================================
+   Footer / Refresh Button
+   ============================================================ */
+.solih-seo-footer-actions {
+    margin-top: 16px;
+    padding-top: 20px;
+    border-top: 1px solid var(--solih-border);
+    display: flex;
+    justify-content: center;
+}
+
+/* Gutenberg refresh button */
+.solih-seo-footer-actions button.is-primary {
+    width: 100%;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--solih-brand, var(--solih-primary)), var(--solih-primary-hover)) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--solih-shadow-md) !important;
+    transition: all 0.3s ease !important;
+}
+
+.solih-seo-footer-actions button.is-primary:hover {
+    box-shadow: var(--solih-shadow-lg) !important;
+    transform: translateY(-1px);
+}
+
+/* Classic refresh button */
+.solih-seo-refresh-btn {
+    width: 100%;
+    text-align: center;
+    background: linear-gradient(135deg, var(--solih-brand, var(--solih-primary)), var(--solih-primary-hover)) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--solih-shadow-md) !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer;
+}
+
+.solih-seo-refresh-btn:hover {
+    box-shadow: var(--solih-shadow-lg) !important;
+    transform: translateY(-1px);
+}
+
+/* ============================================================
+   Throttle — Disabled Refresh Button
+   ============================================================ */
+.solih-seo-btn-throttled,
+.solih-seo-btn-throttled:hover,
+.solih-seo-refresh-btn.solih-seo-btn-throttled,
+.solih-seo-refresh-btn.solih-seo-btn-throttled:hover,
+.solih-seo-footer-actions button.solih-seo-btn-throttled,
+.solih-seo-footer-actions button.solih-seo-btn-throttled:hover {
+    background: #94a3b8 !important;
+    cursor: not-allowed !important;
+    opacity: 0.7;
+    transform: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+}
+
+/* ============================================================
+   RTL Support (Arabic)
+   ============================================================ */
+[dir="rtl"] .solih-seo-card-actions {
+    justify-content: flex-start;
+}
+
+[dir="rtl"] .solih-seo-suggestion-card::before {
+    left: auto;
+    right: 0;
+}
+
+[dir="rtl"] .solih-seo-error-state {
+    border-left: none;
+    border-right: 4px solid var(--solih-danger);
+}
+
+[dir="rtl"] .solih-seo-empty-state {
+    border-left: none;
+    border-right: 4px solid #f59e0b;
+}
+
+[dir="rtl"] .solih-seo-score-text {
+    right: auto;
+    left: 8px;
+}
+
+[dir="rtl"] .solih-seo-score-fill {
+    left: auto;
+    right: 0;
+}
+
+[dir="rtl"] .solih-seo-lang-bar {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .solih-seo-tabs {
+    flex-direction: row-reverse;
+}
+
+/* ============================================================
+   ============================================================
+   Settings Page — Premium Luxury Layout
+   ============================================================
+   ============================================================ */
+
+.solih-seo-settings-wrap {
+    max-width: 720px;
+    margin: 30px auto;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Header with logo & badge */
+.solih-seo-settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding: 24px 28px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid var(--solih-border, #e2e8f0);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.solih-seo-logo-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.solih-seo-logo-icon {
+    font-size: 36px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.15));
+}
+
+.solih-seo-settings-header h1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--solih-text-dark, #0F172A);
+    margin: 0 0 2px 0;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+}
+
+.solih-seo-settings-subtitle {
+    font-size: 13px;
+    color: var(--solih-text-muted, #64748B);
+    margin: 0;
+    font-weight: 500;
+}
+
+.solih-seo-version-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    color: var(--solih-brand, var(--solih-primary, #4F46E5));
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    border: 1px solid #c7d2fe;
+    white-space: nowrap;
+    box-shadow: 0 1px 3px rgba(79, 70, 229, 0.08);
+}
+
+/* Main settings card */
+.solih-seo-settings-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+}
+
+/* Inner card header */
+.solih-seo-card-inner-header {
+    padding: 24px 32px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    background: linear-gradient(180deg, #fafbff 0%, #ffffff 100%);
+}
+
+.solih-seo-card-inner-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--solih-text-dark, #0F172A);
+    margin: 0 0 6px 0;
+}
+
+.solih-seo-card-inner-header p {
+    font-size: 13px;
+    color: var(--solih-text-muted, #64748B);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Form table inside card */
+.solih-seo-settings-card form {
+    padding: 8px 32px 32px;
+}
+
+.solih-seo-settings-card .form-table {
+    border: none;
+}
+
+.solih-seo-settings-card .form-table th {
+    font-weight: 700;
+    font-size: 14px;
+    color: #334155;
+    padding: 22px 10px 22px 0;
+    vertical-align: top;
+    border-bottom: 1px solid #f8fafc;
+}
+
+.solih-seo-settings-card .form-table td {
+    padding: 22px 10px;
+    border-bottom: 1px solid #f8fafc;
+}
+
+.solih-seo-settings-card .form-table tr:last-child th,
+.solih-seo-settings-card .form-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Color Picker field */
+.solih-seo-settings-card .wp-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Post Types Fieldset */
+.solih-seo-post-types-fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.solih-seo-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    user-select: none;
+}
+
+.solih-seo-checkbox-label:hover {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.06);
+}
+
+.solih-seo-checkbox-label input[type="checkbox"] {
+    accent-color: var(--solih-brand, var(--solih-primary, #4F46E5));
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.solih-seo-checkbox-label input[type="checkbox"]:checked+span {
+    color: var(--solih-brand, var(--solih-primary, #4F46E5));
+}
+
+/* Blacklist Textarea */
+.solih-seo-blacklist-textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: "Inter", -apple-system, sans-serif;
+    background: #f8fafc;
+    color: #334155;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    line-height: 1.6;
+}
+
+.solih-seo-blacklist-textarea:focus {
+    outline: none;
+    border-color: var(--solih-brand, var(--solih-primary, #4F46E5));
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    background: #ffffff;
+}
+
+/* Save Button — uses brand color */
+.solih-seo-save-btn {
+    background: linear-gradient(135deg, var(--solih-brand, #4F46E5), var(--solih-primary-hover, #4338CA)) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 10px 32px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2) !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+}
+
+.solih-seo-save-btn:hover {
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.28) !important;
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+.solih-seo-save-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.15) !important;
+}
+
+/* Description text */
+.solih-seo-settings-card .description {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #94a3b8;
+    font-style: normal;
+    line-height: 1.6;
+}
+
+/* Footer */
+.solih-seo-settings-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding: 16px 20px;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 500;
+    border-top: 1px solid #f1f5f9;
+}
+
+.solih-seo-settings-footer p {
+    margin: 0;
+}
